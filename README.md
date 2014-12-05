@@ -18,7 +18,7 @@ What does this warrior do?
 This process warrior is written in C++11, and is designed to be:
 
 1. As fast as possible
-2. Run on Linux only
+2. Compatible on Linux only
 
 That means that at times, the code may not follow idiomatic C++(11) guidelines (which is only where performance matters), or POSIX portability. This warrior only uses native Linux API's everywhere - it never executes a system command to the job.
 
