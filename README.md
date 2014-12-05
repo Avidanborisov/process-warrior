@@ -11,6 +11,7 @@ The game's environment is any Linux distribution. The rules are simple:
 * It's illegal to hang, crash or shut down the system.
 * All process must start their logic **only** after `/tmp/GO` is created. If the program is written in C, the first line of the `main()` function has to be `while (access("/tmp/GO", F_OK)) { }`.
 * All processes will be put into `/tmp` before starting the game, and will be executed from there.
+
 Besides that, all processes can do **absolutely anything**, and can be written in **any** language.
 
 What does this warrior do?
