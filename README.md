@@ -15,9 +15,14 @@ Besides that, all processes can do **absolutely anything**, and can be written i
 
 What does this warrior do?
 --------------------------
-This process warrior is written in C++11, and is designed to be as fast as possible, and compatible only on Linux. That means that at times, the code may not follow idiomatic C++(11) guidelines (and that's only where performance matters), or POSIX portability. This warrior only uses native Linux API's everywhere - it never executes a system command to the job.
+This process warrior is written in C++11, and is designed to be:
 
-The warrior's course of action is divided to three steps: hiding, protecting and inifintely destroying.
+1. As fast as possible
+2. Run on Linux only
+
+That means that at times, the code may not follow idiomatic C++(11) guidelines (which is only where performance matters), or POSIX portability. This warrior only uses native Linux API's everywhere - it never executes a system command to the job.
+
+The warrior's course of action is divided into three steps: hiding, protecting and inifintely destroying.
 
 ###Hiding
 ###Protecting
