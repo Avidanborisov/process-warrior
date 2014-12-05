@@ -22,7 +22,7 @@ This process warrior is written in C++11, and is designed to be:
 
 That means that at times, the code may not follow idiomatic C++(11) guidelines (which is only where performance matters), or POSIX portability. This warrior only uses native Linux API's everywhere - it never executes a system command to the job.
 
-The warrior's course of action is divided into three steps: hiding, protecting and inifintely destroying.
+The warrior's course of action is divided into three steps: hiding, protecting and infinitely destroying.
 
 ###Hiding
 ###Protecting
