@@ -33,13 +33,22 @@ How can other processes know what processes are their competitors? Well, the rul
 * `/proc/<pid>/cwd` that links to `/tmp`
 * `/proc/<pid>/cmdline` with the first argument being an executable file from `/tmp`
 
-There are no other 'sure' ways of identifying competitor processes. Therefore, the first objective of our warrior is to change all of these properties to something else. The last two properties are changed easily by calling `chdir()` and modifying the process's `argv`. The first property, which is the path to process's executable image, is changed by making a hardlink to the warrior's executable image somewhere else, and then executing that hardlink, which executes the same program, but now with a different executable image path.
+There are no other 'sure' ways of identifying competitor processes. Therefore, the first objective of our warrior is to change all of these properties to something else. The last two properties are changed easily by calling `chdir()` and modifying the process's `argv` (I chose the fake name of `uwotm8` for the process). The first property, which is the path to process's executable image, is changed by making a hardlink to the warrior's executable image somewhere else, and then executing that hardlink, which executes the same program, but now with a different executable image path.
 
 ###Protecting
-Even after the process is hidden, some basic protection for the process is still provided. We can never know if the process was hidden successfuly - a clever warrior could maybe find a way to track us down.
+Even after the process is hidden, some basic protection for the process is still provided. We can never know if the process was hidden successfully - a clever warrior could maybe find a way to track us down.
 
-The protection boils down to handling signals sent to the process that normally terminate it. Altough a clever warrior would just send a `SIGKILL` which can't be ignored (altough here it is, in some circumstances. see next section), it is beneficial to ignore all other signals that can be ignored, such as `SIGQUIT` or `SIGINT`.
+The protection boils down to handling signals sent to the process that normally terminate it. Although a clever warrior would just send a `SIGKILL` which can't be ignored (although here it is, in some circumstances. see next section), it is beneficial to ignore all other signals that can be ignored, such as `SIGQUIT` or `SIGINT`.
 
 But those signals aren't just ignored. In fact, the handlers are designed to kill the signal sender if possible (quite clever ha?).
 
 ###Destroying
+This is the core of the program. After the process is hidden and protected from various signals, it's job is to actually start and terminate the enemies.
+
+This part essentially infinitely iterates on directory entries in `/proc`, killing all processes which have a `/proc/<pid>/exe` link to a program in `/tmp` (and if possible, not only the matching process is `SIGKILL`ed, but it's entire process group too). We could look at other properties in `/proc` as described before, but those aren't as reliable and generally not worth the time. 
+
+But that's not all. They key strength of this warrior is the fact that it `fork`s itself periodically (with each child getting a different process group, to not associate them together), while running in a distributed fashion. That means that as long as not all processes are killed, they will continue to fork themselves and run without a problem. Even if the original father process is killed, the children will continue to fork to 'complete' the missing process. Yes, that means that as long as not all processes are killed at the same time, this warrior can essentially ignore `SIGKILL`*.
+
+Does the process just fork itself infinitely? No, that would be against the rules ("you shall not crash"). There's a constant value for the maximum number of processes that can run at all times. But how can the processes know how many copies of themselves are currently running?
+
+That problems took me years to find a solution for, till I finally came across a gem in some manpage - the `shm_nattch` property of [POSIX shared memory](http://man7.org/linux/man-pages/man7/shm_overview.7.html) regions. All the processes of our warrior use a shared memory region, and the `shm_nattch` property of that region specifies the current number of processes running at any time (it's updated by the kernel automatically with each process's termination). Therefore, with each periodic callback taken place, this property is checked to see whether there's a need to `fork()` another process.
