@@ -26,5 +26,14 @@ That means that at times, the code may favor native system API's instead of C++(
 The warrior's course of action is divided into three steps: hiding, protecting and infinitely destroying.
 
 ###Hiding
+The first thing to do is to hide the process from the other processes, making it "invisible" to them. If done correctly, this essentially eliminates the chance of being killed by other processes, since they won't even know your process exists. 
+
+How can other processes know what processes are their competitors? Well, the rules say all processes will be run from `/tmp`, so that means all them will have at least one of the following properties:
+* `/proc/<pid>/exe` that links to an executable file in `/tmp`
+* `/proc/<pid>/cwd` that links to `/tmp`
+* `/proc/<pid>/cmdline` with the first argument being an executable file from `/tmp`
+
+There are no other 'sure' ways of identifying competitor processes. Therefore, the first objective of our warrior is to change all of these properties to something else. The last two properties are changed easily by calling `chdir()` and modifying the process's `argv`. The first property, which is the path to process's executable image, is changed by making a hardlink to the warrior's executable image somewhere else, and then executing that hardlink, which executes the same program, but now with a different executable image path.
+
 ###Protecting
 ###Destroying
