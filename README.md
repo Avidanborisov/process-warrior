@@ -36,4 +36,10 @@ How can other processes know what processes are their competitors? Well, the rul
 There are no other 'sure' ways of identifying competitor processes. Therefore, the first objective of our warrior is to change all of these properties to something else. The last two properties are changed easily by calling `chdir()` and modifying the process's `argv`. The first property, which is the path to process's executable image, is changed by making a hardlink to the warrior's executable image somewhere else, and then executing that hardlink, which executes the same program, but now with a different executable image path.
 
 ###Protecting
+Even after the process is hidden, some basic protection for the process is still provided. We can never know if the process was hidden successfuly - a clever warrior could maybe find a way to track us down.
+
+The protection boils down to handling signals sent to the process that normally terminate it. Altough a clever warrior would just send a `SIGKILL` which can't be ignored (altough here it is, in some circumstances. see next section), it is beneficial to ignore all other signals that can be ignored, such as `SIGQUIT` or `SIGINT`.
+
+But those signals aren't just ignored. In fact, the handlers are designed to kill the signal sender if possible (quite clever ha?).
+
 ###Destroying
