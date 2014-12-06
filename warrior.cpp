@@ -1,3 +1,9 @@
+/**
+ * Author: Avidan Borisov, 2014
+ * 
+ * A highly effective Linux "Process War" combatant
+ */
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
