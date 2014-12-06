@@ -3,9 +3,9 @@ process-warrior
 
 A highly effective Linux "Process War" combatant.
 
-What is a Process War?
-----------------------
-Similarly to the old [Core War](http://en.wikipedia.org/wiki/Core_War), a "Process War" is a programming game for two or more battle process. Each process's objective is to kill all the enemy processes. The winner is the last running process.
+What is Process War?
+--------------------
+Similarly to the old [Core War](http://en.wikipedia.org/wiki/Core_War), "Process War" is a programming game for two or more battle process. Each process's objective is to kill all the enemy processes. The winner is the last running process.
 
 The game's environment is any Linux distribution. The rules are simple:
 * It's illegal to hang, crash or shut down the system.
@@ -21,7 +21,7 @@ This process warrior is written in C++11, and is designed to be:
 1. As fast as possible
 2. Compatible on Linux only
 
-That means that at times, the code may not follow idiomatic C++(11) guidelines (which is only where performance matters), or POSIX portability. This warrior only uses native Linux API's everywhere - it never executes a system command to the job.
+That means that at times, the code may favor native system API's instead of C++(11) standard library features and idioms (due to performance). In addition, the code isn't meant to be POSIX compliant, it's supposed to be running on Linux only. This warrior only uses native Linux API's everywhere - it never executes a system command to the job.
 
 The warrior's course of action is divided into three steps: hiding, protecting and infinitely destroying.
 
