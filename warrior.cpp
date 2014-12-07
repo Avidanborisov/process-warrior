@@ -174,7 +174,7 @@ void destroy() {
         }
     });
 
-    sigsetjmp(start, 1); // forked process will return to here, and read /proc all over again
+    sigsetjmp(start, 1); // forked processes will return to here, and read /proc all over again
     while (true) {
         DIR* proc = opendir("/proc");
         
